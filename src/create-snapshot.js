@@ -10,15 +10,47 @@ export function createSnapshot() {
             function (droplets) {
                 droplets.forEach(function (droplet) {
 
-                    // @TODO: check if snapshot with the same exist.
-                    // In case of loop you will have a lot of snapshot!
+                    let slug = droplet.name + '_' + today;
 
-                    client.droplets.snapshot(droplet.id, droplet.name + '_' + today)
-                        .then(
-                            function (result) {
-                                console.log(result);
+                    console.log("MANAGE: "+droplet.name);
+
+                    client.images.list(
+                        {
+                            private: true
+                        }
+                    )
+                        .then(function (images) {
+                            let found = false;
+
+                            console.log("Search if image exists: "+slug);
+
+                            // Check if we have images with same slug
+                            images.forEach(function (image) {
+                                if (image.name === slug) {
+                                    console.log("WARNING! Found an image with same slug " + slug);
+                                    found = true;
+                                }
+                            });
+                            // No snapshot with same slug, create it!
+                            if (!found) {
+                                client.droplets.snapshot(droplet.id, slug)
+                                    .then(
+                                        function (response) {
+                                            console.log("Create new snapshot for "+droplet.name);
+
+                                            let output = {
+                                                "id": response.id,
+                                                "type": response.type,
+                                                "status": response.status,
+                                                "started_at": response.started_at
+                                            }
+
+                                            console.log(output);
+                                            console.log("---------------------------------------------------------");
+                                        }
+                                    );
                             }
-                        );
+                        });
                 });
             }
         );

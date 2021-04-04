@@ -1,5 +1,7 @@
 import client from './client.js'
 
+const copyRegion = process.env.DO_REGION_COPY;
+
 export function copySnapshot() {
 
     // Copy snapshots
@@ -13,16 +15,28 @@ export function copySnapshot() {
                         image.id,
                         {
                             "type": "transfer",
-                            "region": "ams2"
+                            "region": copyRegion
                         }
                     ).then(
                         function (response) {
-                            console.log(response);
+                            console.log("Copy snapshot "+image.name+" to region "+copyRegion);
+
+                            let output = {
+                                "id": response.id,
+                                "type": response.type,
+                                "status": response.status,
+                                "started_at": response.started_at
+                            }
+
+                            console.log(output);
+                            console.log("---------------------------------------------------------");
                         }
                     ).catch(
                         function (error) {
-                            console.log(image.name);
+                            console.log("ERROR!")
                             console.log(error.body.message);
+                            console.log(image.name);
+                            console.log("---------------------------------------------------------");
                         }
                     );
                 });
