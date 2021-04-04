@@ -12,5 +12,9 @@
   "dependencies": {
     "digitalocean": "^1.2.1",
     "dotenv": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=14",
+    "npm": ">=6"
   }
 }
