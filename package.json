@@ -1,0 +1,16 @@
+{
+  "name": "do-backup-system",
+  "version": "0.1.0",
+  "description": "Digital Ocean Backup Systems",
+  "main": "do-cli.js",
+  "scripts": {
+    "start": "node do-cli.js"
+  },
+  "author": "Morelli Giuseppe",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "digitalocean": "^1.2.1",
+    "dotenv": "^8.2.0"
+  }
+}
