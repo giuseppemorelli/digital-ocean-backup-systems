@@ -12,22 +12,22 @@ export function createSnapshot() {
 
                     let slug = droplet.name + '_' + today;
 
-                    console.log("MANAGE: "+droplet.name);
+                    console.log("MANAGE: " + droplet.name);
 
-                    client.images.list(
+                    client.snapshots.list(
                         {
-                            private: true
+                            resource_type: 'droplet'
                         }
                     )
-                        .then(function (images) {
+                        .then(function (snapshots) {
                             let found = false;
 
-                            console.log("Search if image exists: "+slug);
+                            console.log("Search if image exists: " + slug);
 
                             // Check if we have images with same slug
-                            images.forEach(function (image) {
-                                if (image.name === slug) {
-                                    console.log("WARNING! Found an image with same slug " + slug);
+                            snapshots.forEach(function (snapshot) {
+                                if (snapshot.name === slug) {
+                                    console.log("WARNING! Found a snapshot with same slug " + slug);
                                     found = true;
                                 }
                             });
@@ -36,7 +36,7 @@ export function createSnapshot() {
                                 client.droplets.snapshot(droplet.id, slug)
                                     .then(
                                         function (response) {
-                                            console.log("Create new snapshot for "+droplet.name);
+                                            console.log("Create new snapshot for " + droplet.name);
 
                                             let output = {
                                                 "id": response.id,
