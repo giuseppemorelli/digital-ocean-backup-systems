@@ -1,11 +1,12 @@
 # Digital Ocean Backup System
 
-Script to create snapshots and copy in different region of Digital Ocean
+Script to create snapshots and copy in different regions of Digital Ocean Datacenter
 
 ## Requirements
 
 - nodejs >= 14
 - npm >= 6
+- Digital Ocean API Token
 
 ## Installation
 
@@ -22,17 +23,15 @@ cp .env.dit .env
 npm start
 ```
 
-## Warning!
-
-Work in progress
-
-
-### Help me to improve
+## Help me to improve
 
 I'm learning Node.js so this is my first project in this "new language". Open an issue or send me a pull request to improve the project.
-
 Thank you!
 
-### TODO
+## TODO
 
 - check if a snapshot is running (before checking Digital Ocean API to verify if is possibile)
+
+## Warning!
+
+This is a work in progress project. Please use carefully.
