@@ -1,9 +1,10 @@
 import client from './client.js'
 
-const copyRegion = process.env.DO_REGION_COPY;
+const copyRegion = process.env.DO_REGION_COPY || 'ams2';
 
-export async function copySnapshot()
-{
+export async function copySnapshot() {
+    console.log('|-> REGION TO COPY: ' + copyRegion);
+
     let snapshotList = await client.images.list({
         private: true
     });
@@ -17,9 +18,7 @@ export async function copySnapshot()
             }
         ).catch(
             function (error) {
-                console.log("ERROR!")
-                console.log(error.body.message);
-                console.log(snapshot.name);
+                console.log('|-> '+snapshot.name+': '+error.body.message);
                 console.log("---------------------------------------------------------");
             }
         );
