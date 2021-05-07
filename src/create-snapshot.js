@@ -1,14 +1,32 @@
 import client from './client.js';
-import csvWriter from 'csv-writer'
+import csvWriter from 'csv-writer';
+import * as fs from 'fs';
+import fsPromises from 'fs/promises';
+import csvAsync from 'async-csv';
 
-const today = new Date().toISOString().substring(0, 10)
-const dropletToExclude = ['web00', 'web01', 'redis', 'nfs', 'web-cron', 'db']
+const today = new Date().toISOString().substring(0, 10);
+// @TODO: use environment variable instead of array
+const dropletToExclude = [];
+const CSV_SNAPSHOTFILE = 'snapshot_list.csv';
 
 export async function createSnapshot()
 {
     let snapshotCreatedList = [];
+    let actionsList = [];
     let dropletList = await client.droplets.list();
     let snapshotList = await client.snapshots.list();
+
+    // Read CSV list of snapshot created for running checking
+    const csvString = await fsPromises.readFile('./var/' + CSV_SNAPSHOTFILE, 'utf-8')
+        .catch(
+            function (error) {
+                console.log('NO SNAPSHOT FILE FOUND');
+            }
+        );
+
+    if (csvString) {
+        actionsList = await csvAsync.parse(csvString);
+    }
 
     for (const droplet of dropletList) {
         console.log('');
@@ -30,39 +48,47 @@ export async function createSnapshot()
             if (snapshot.name === slug) {
                 console.log("|-> WARNING! Found a snapshot with same slug " + slug);
                 found = true;
-                continue;
+                break;
             }
         }
 
-        // Check if there is a snapshot in progress
-        // @TODO
+        // Check if there is a running snapshot process via actions on CSV
+        for (const action of actionsList) {
+            if (Number.parseInt(action[1]) === droplet.id) {
+                let actionResponse = await client.droplets.getAction(droplet.id, action[2]);
+                if (actionResponse.status !== 'completed')
+                {
+                    found = true;
+                } else {
+                    console.log('|-> There is another snaphost process for this droplet, skipped!');
+                }
+            }
+        }
 
+        // Everything is ok, we can create a snapshot
         if (!found) {
-            console.log("|->  CREATE SNAPSHOT for " + droplet.name);
+            console.log('|->  CREATE SNAPSHOT for ' + droplet.name);
 
             let snapshotCreated = await client.droplets.snapshot(droplet.id, slug);
             let output = {
-                "droplet_name": droplet.id,
-                "droplet_id": droplet.id,
-                "action_id": snapshotCreated.id,
-                "type": snapshotCreated.type,
-                "status": snapshotCreated.status,
-                "started_at": snapshotCreated.started_at
+                'droplet_name': droplet.name,
+                'droplet_id': droplet.id,
+                'action_id': snapshotCreated.id
             }
             snapshotCreatedList.push(output);
         }
     }
 
-    const csv = csvWriter.createObjectCsvWriter(
-        {
-            path: './var/snapshot_list.csv', header: [
-                {id: 'droplet_name', title: 'droplet_name'},
-                {id: 'droplet_id', title: 'droplet_id'},
-                {id: 'action_id', title: 'action_id'},
-                {id: 'type', title: 'type'},
-            ]
-        }
-    );
+    // Write on CSV snapshot action list
+    if (snapshotCreatedList.length > 0) {
+        const csv = csvWriter.createObjectCsvWriter(
+            {
+                path: './var/' + CSV_SNAPSHOTFILE,
+                header: ['droplet_name', 'droplet_id', 'action_id'],
+                append: true
+            }
+        );
 
-    await csv.writeRecords(snapshotCreatedList).then(() => console.log('|-> SNAPSHOT list action saved on CSV!'));
+        await csv.writeRecords(snapshotCreatedList).then(() => console.log('|-> SNAPSHOT list action saved on CSV!'));
+    }
 }
