@@ -1,6 +1,6 @@
-# Digital Ocean Backup System
+<h1 align="center">Digital Ocean Backup System</h1>
 
-Script to create snapshots and copy in different regions of Digital Ocean Datacenter
+Automate your snapshot system and copy into multiple regions of Digital Ocean Datacenter
 
 ## Requirements
 
@@ -10,28 +10,27 @@ Script to create snapshots and copy in different regions of Digital Ocean Datace
 
 ## Installation
 
-```
+```bash
 npm install
 cp .env.dit .env
 
 # copy your Digital Ocean API KEY on API_KEY variable
 ```
 
-## Start
+## How to use
 
-```
+Just run:
+
+```bash
 npm start
 ```
 
-## Help me to improve
+## Contributing
 
-I'm learning Node.js so this is my first project in this "new language". Open an issue or send me a pull request to improve the project.
-Thank you!
+In the spirit of Open Source, everyone is very welcome to contribute to this project.
+You can contribute just by submitting bugs or suggesting improvements by
+[opening an issue on GitHub](https://github.com/giuseppemorelli/digital-ocean-backup-systems/issues) or by [submitting a PR](https://github.com/giuseppemorelli/digital-ocean-backup-systems/pulls).
 
-## TODO
+## License
 
-- check if a snapshot is running (before checking Digital Ocean API to verify if is possibile)
-
-## Warning!
-
-This is a work in progress project. Please use carefully.
+Licensed under [MIT License](LICENSE). © Giuseppe Morelli.
