@@ -60,14 +60,14 @@ export async function createSnapshot()
                 {
                     found = true;
                 } else {
-                    console.log('|-> There is another snaphost process for this droplet, skipped!');
+                    console.log('|-> There is another snapshot process for this droplet, skipped!');
                 }
             }
         }
 
         // Everything is ok, we can create a snapshot
         if (!found) {
-            console.log('|->  CREATE SNAPSHOT for ' + droplet.name);
+            console.log('|-> CREATE SNAPSHOT for ' + droplet.name);
 
             let snapshotCreated = await client.droplets.snapshot(droplet.id, slug);
             let output = {
@@ -75,7 +75,11 @@ export async function createSnapshot()
                 'droplet_id': droplet.id,
                 'action_id': snapshotCreated.id
             }
+            console.log(output);
             snapshotCreatedList.push(output);
+        }
+        else {
+            console.log('|-> Skip');
         }
     }
 
