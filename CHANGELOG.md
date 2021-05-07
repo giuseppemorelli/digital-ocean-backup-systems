@@ -1,6 +1,6 @@
 # Digital Ocean Backup System
 
-## [unreleased]
+## 0.2.0
 
 ### Changed
 - [#3](https://github.com/giuseppemorelli/digital-ocean-backup-systems/issues/3) improve code of copySnapshot()
