@@ -1,57 +1,68 @@
-import client from './client.js'
+import client from './client.js';
+import csvWriter from 'csv-writer'
 
 const today = new Date().toISOString().substring(0, 10)
+const dropletToExclude = ['web00', 'web01', 'redis', 'nfs', 'web-cron', 'db']
 
-export function createSnapshot() {
+export async function createSnapshot()
+{
+    let snapshotCreatedList = [];
+    let dropletList = await client.droplets.list();
+    let snapshotList = await client.snapshots.list();
 
-    // Make snapshots
-    client.droplets.list()
-        .then(
-            function (droplets) {
-                droplets.forEach(function (droplet) {
+    for (const droplet of dropletList) {
+        console.log('');
+        console.log("*********************************");
+        console.log("MANAGE: " + droplet.name);
+        console.log("*********************************");
 
-                    let slug = droplet.name + '_' + today;
+        // Check if droplet is excluded
+        if (dropletToExclude.includes(droplet.name)) {
+            console.log("|-> WARNING! Droplet excluded " + droplet.name);
+            continue;
+        }
 
-                    console.log("MANAGE: " + droplet.name);
+        let slug = droplet.name + '_' + today;
+        let found = false;
 
-                    client.snapshots.list(
-                        {
-                            resource_type: 'droplet'
-                        }
-                    )
-                        .then(function (snapshots) {
-                            let found = false;
-
-                            console.log("Search if image exists: " + slug);
-
-                            // Check if we have images with same slug
-                            snapshots.forEach(function (snapshot) {
-                                if (snapshot.name === slug) {
-                                    console.log("WARNING! Found a snapshot with same slug " + slug);
-                                    found = true;
-                                }
-                            });
-                            // No snapshot with same slug, create it!
-                            if (!found) {
-                                client.droplets.snapshot(droplet.id, slug)
-                                    .then(
-                                        function (response) {
-                                            console.log("Create new snapshot for " + droplet.name);
-
-                                            let output = {
-                                                "id": response.id,
-                                                "type": response.type,
-                                                "status": response.status,
-                                                "started_at": response.started_at
-                                            }
-
-                                            console.log(output);
-                                            console.log("---------------------------------------------------------");
-                                        }
-                                    );
-                            }
-                        });
-                });
+        // Check if there is a snapshot with the same slug
+        for (const snapshot of snapshotList) {
+            if (snapshot.name === slug) {
+                console.log("|-> WARNING! Found a snapshot with same slug " + slug);
+                found = true;
+                continue;
             }
-        );
+        }
+
+        // Check if there is a snapshot in progress
+        // @TODO
+
+        if (!found) {
+            console.log("|->  CREATE SNAPSHOT for " + droplet.name);
+
+            let snapshotCreated = await client.droplets.snapshot(droplet.id, slug);
+            let output = {
+                "droplet_name": droplet.id,
+                "droplet_id": droplet.id,
+                "action_id": snapshotCreated.id,
+                "type": snapshotCreated.type,
+                "status": snapshotCreated.status,
+                "started_at": snapshotCreated.started_at
+            }
+            snapshotCreatedList.push(output);
+        }
+    }
+
+    const csv = csvWriter.createObjectCsvWriter(
+        {
+            path: './var/snapshot_list.csv', header: [
+                {id: 'droplet_name', title: 'droplet_name'},
+                {id: 'droplet_id', title: 'droplet_id'},
+                {id: 'action_id', title: 'action_id'},
+                {id: 'type', title: 'type'},
+            ]
+        }
+    );
+
+    await csv.writeRecords(snapshotCreatedList).then(() => console.log('|-> SNAPSHOT list action saved on CSV!'));
 }
