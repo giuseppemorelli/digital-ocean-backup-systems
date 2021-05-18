@@ -6,24 +6,63 @@ Automate your snapshot system and copy into multiple regions of Digital Ocean Da
 
 - nodejs >= 14
 - npm >= 6
-- Digital Ocean API Token
+- Digital Ocean API Token ([here](https://docs.digitalocean.com/reference/api/create-personal-access-token/) you can find a guide to create an API Token)
 
 ## Installation
 
 ```bash
 npm install
 cp .env.dit .env
-
-# copy your Digital Ocean API KEY on API_KEY variable
 ```
 
 ## How to use
 
-Just run:
+1) Edit `.env` as you like. Remember that `API_TOKEN` is a required data
+2) Just run:
 
 ```bash
 npm start
 ```
+
+3) (optional) Add to your cronjob list on server
+
+```bash
+crontab -e
+
+0 1 * * * /bin/bash /home/user/do-backup-system/bin/backup.sh
+```
+
+### ENV Variables
+
+| ENV NAME                 | DESCRIPTION                                                  | NOTE / EXAMPLE                    |
+| ------------------------ | ------------------------------------------------------------ | --------------------------------- |
+| API_TOKEN                | Digital Ocean API Token                                      |                                   |
+| DO_REGION_COPY           | Slug region name that you want to copy your snapshots (increase security in case of disaster recovery) | Default is **'ams2**'             |
+| REMOVE_OLD_SNAPSHOT_DAYS | Value in days that you want to remove old snapshots          | Default is '**30**'               |
+| DROPLETS_TO_EXCLUDE      | Comma separated list of droplets that you don't want to backup with snapshots | Ex.<br />web00,web01,test-droplet |
+| SNAPSHOTS_TO_EXCLUDE     | Comma separated list of snaphots that you don't want to backup with snapshots | Ex.<br />web-base, image-base     |
+
+
+
+### Digital Ocean Datacenter Region Code List
+
+More info here: https://docs.digitalocean.com/products/platform/availability-matrix/
+
+| Slug | Name            |
+| ---- | --------------- |
+| nyc1 | New York 1      |
+| nyc2 | New York 2      |
+| nyc3 | New York 3      |
+| sfo1 | San Francisco 1 |
+| sfo2 | San Francisco 2 |
+| sfo3 | San Francisco 3 |
+| ams2 | Amsterdam 2     |
+| ams3 | Amsterdam 3     |
+| fra1 | Frankfurt 1     |
+| tor1 | Toronto 1       |
+| lon1 | London 1        |
+| blr1 | Bangalore 1     |
+| sgp1 | Singapore 1     |
 
 ## Contributing
 
