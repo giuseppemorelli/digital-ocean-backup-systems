@@ -1,7 +1,11 @@
 <h1 align="center">Digital Ocean Backup System</h1>
 
+<div align="center">
+
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/giuseppemorelli/digital-ocean-backup-systems?sort=semver&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/giuseppemorelli/digital-ocean-backup-systems?style=for-the-badge)
+
+</div>
 
 Automate your snapshot system and copy into multiple regions of Digital Ocean Datacenter
 
