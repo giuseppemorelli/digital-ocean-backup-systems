@@ -1,5 +1,8 @@
 <h1 align="center">Digital Ocean Backup System</h1>
 
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/giuseppemorelli/digital-ocean-backup-systems?sort=semver&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/giuseppemorelli/digital-ocean-backup-systems?style=for-the-badge)
+
 Automate your snapshot system and copy into multiple regions of Digital Ocean Datacenter
 
 ## Requirements
@@ -10,7 +13,18 @@ Automate your snapshot system and copy into multiple regions of Digital Ocean Da
 
 ## Installation
 
+Donwload the code from relases [list](https://github.com/giuseppemorelli/digital-ocean-backup-systems/releases/)
+
+or clone with git
+
 ```bash
+git clone https://github.com/giuseppemorelli/digital-ocean-backup-systems.git
+```
+
+Enter in project folder and run
+
+```bash
+
 npm install
 cp .env.dit .env
 ```
