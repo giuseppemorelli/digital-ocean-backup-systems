@@ -1,5 +1,10 @@
 # Digital Ocean Backup System
 
+## unreleased
+
+## Changed
+- [#8](https://github.com/giuseppemorelli/digital-ocean-backup-systems/issues/8) droplet exclude list moved to .env file 
+
 ## 0.2.0
 
 ### Changed
