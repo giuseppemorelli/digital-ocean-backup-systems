@@ -4,7 +4,7 @@ const daysToCheck = process.env.REMOVE_OLD_SNAPSHOT_DAYS || '30';
 const today = new Date();
 
 // Snapshot list to exclude from remove action
-let snapshotToExclude = process.env.SNAPSHOT_TO_EXCLUDE || [];
+let snapshotToExclude = process.env.SNAPSHOTS_TO_EXCLUDE || [];
 if (snapshotToExclude.length > 0) {
     snapshotToExclude = snapshotToExclude.split(',');
 }

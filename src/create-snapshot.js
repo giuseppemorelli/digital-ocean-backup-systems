@@ -5,7 +5,7 @@ import fsPromises from 'fs/promises';
 import csvAsync from 'async-csv';
 
 // Droplet list to exclude from snapshot
-let dropletToExclude = process.env.DROPLET_TO_EXCLUDE || [];
+let dropletToExclude = process.env.DROPLETS_TO_EXCLUDE || [];
 if (dropletToExclude.length > 0) {
     dropletToExclude = dropletToExclude.split(',');
 }
