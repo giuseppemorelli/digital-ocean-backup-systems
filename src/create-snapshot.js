@@ -4,13 +4,15 @@ import * as fs from 'fs';
 import fsPromises from 'fs/promises';
 import csvAsync from 'async-csv';
 
+// Droplet list to exclude from snapshot
+let dropletToExclude = process.env.DROPLET_TO_EXCLUDE || [];
+if (dropletToExclude.length > 0) {
+    dropletToExclude = dropletToExclude.split(',');
+}
 const today = new Date().toISOString().substring(0, 10);
-// @TODO: use environment variable instead of array
-const dropletToExclude = [];
 const CSV_SNAPSHOTFILE = 'snapshot_list.csv';
 
-export async function createSnapshot()
-{
+export async function createSnapshot() {
     let snapshotCreatedList = [];
     let actionsList = [];
     let dropletList = await client.droplets.list();
@@ -56,8 +58,7 @@ export async function createSnapshot()
         for (const action of actionsList) {
             if (Number.parseInt(action[1]) === droplet.id) {
                 let actionResponse = await client.droplets.getAction(droplet.id, action[2]);
-                if (actionResponse.status !== 'completed')
-                {
+                if (actionResponse.status !== 'completed') {
                     found = true;
                 } else {
                     console.log('|-> There is another snapshot process for this droplet, skipped!');
@@ -77,8 +78,7 @@ export async function createSnapshot()
             }
             console.log(output);
             snapshotCreatedList.push(output);
-        }
-        else {
+        } else {
             console.log('|-> Skip');
         }
     }
