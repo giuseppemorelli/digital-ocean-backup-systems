@@ -2,8 +2,12 @@ import client from './client.js'
 
 const daysToCheck = process.env.REMOVE_OLD_SNAPSHOT_DAYS || '30';
 const today = new Date();
-// @TODO: use environment variable instead of array
-const snapshotToExclude = [];
+
+// Snapshot list to exclude from remove action
+let snapshotToExclude = process.env.SNAPSHOT_TO_EXCLUDE || [];
+if (snapshotToExclude.length > 0) {
+    snapshotToExclude = snapshotToExclude.split(',');
+}
 
 export async function removeSnapshot() {
     let snapshotList = await client.images.list({
