@@ -1,6 +1,6 @@
 # Digital Ocean Backup System
 
-## unreleased
+## 0.3.0
 
 ### Added
 - bash script for simplify cronjobs server
