@@ -3,9 +3,10 @@ import docli from 'digitalocean'
 
 dotenv.config();
 const apiKey = process.env.API_TOKEN || null;
+let client = null;
 
 if(apiKey !== null) {
-    let client = docli.client(apiKey);
+    client = docli.client(apiKey);
 }
 else {
     console.log("*********************************");
