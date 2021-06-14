@@ -9,6 +9,14 @@
 
 Automate your snapshot system and copy into multiple regions of Digital Ocean Datacenter
 
+## The "Digital Ocean Backup Problem"
+
+Droplets backups are made only once a week.  
+You cannot choose frequencies and also is only in 1 region.  
+You cannot choose to copy to other regions.
+
+Migrate from backup to snapshot can avoid those problems and let you "free to choose".
+
 ## Requirements
 
 - nodejs >= 14
