@@ -22,10 +22,10 @@ export async function removeSnapshot() {
             continue;
         }
 
-        const cratedAt = new Date(snapshot.created_at);
-        const diffDate = new Date(today.getTime() - cratedAt.getTime());
+        const createdAt = new Date(snapshot.created_at);
+        const diffDate = today.getTime() - createdAt.getTime();
 
-        if (Number.parseInt(diffDate.getUTCDate() - 1) >= Number.parseInt(daysToCheck)) {
+        if (Number.parseInt(diffDate / (24 * 3600 * 1000)) >= Number.parseInt(daysToCheck)) {
             console.log('|-> SNAPSHOT ' + snapshot.name + ' will be deleted');
 
             let response = await client.images.delete(snapshot.id);
