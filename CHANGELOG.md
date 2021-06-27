@@ -1,5 +1,10 @@
 # Digital Ocean Backup System
 
+## 0.3.2
+
+### Changed
+- remove-snapshot.js problem with calculate difference date to remove old snapshot
+
 ## 0.3.1
 
 ### Changed
