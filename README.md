@@ -15,6 +15,8 @@ Droplets backups are made only once a week.
 You cannot choose frequencies and also is only in 1 region.  
 You cannot choose to copy to other regions.
 
+You cannot create a backup of volume with a schedule, just manually
+
 Migrate from backup to snapshot can avoid those problems and let you "free to choose".
 
 ## Requirements
@@ -67,6 +69,7 @@ crontab -e
 | REMOVE_OLD_SNAPSHOT_DAYS | Value in days that you want to remove old snapshots          | Default is '**30**'               |
 | DROPLETS_TO_EXCLUDE      | Comma separated list of droplets that you don't want to backup with snapshots | Ex.<br />web00,web01,test-droplet |
 | SNAPSHOTS_TO_EXCLUDE     | Comma separated list of snaphots that you don't want to backup with snapshots | Ex.<br />web-base, image-base     |
+| VOLUME_TO_EXCLUDE        | Comma separated list of volume that you don't want to backup with snapshots | Ex.<br />mnt-base, volume-base     |
 
 
 
