@@ -1,6 +1,5 @@
-import client from './client.js';
+import client from '../client.js';
 import csvWriter from 'csv-writer';
-import * as fs from 'fs';
 import fsPromises from 'fs/promises';
 import csvAsync from 'async-csv';
 
