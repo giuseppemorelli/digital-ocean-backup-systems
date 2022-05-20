@@ -63,13 +63,15 @@ crontab -e
 
 ## Use with docker
 
-Copy locally the env file sample
+1) Copy locally the env file sample
 
 ```bash
 wget https://raw.githubusercontent.com/giuseppemorelli/digital-ocean-backup-systems/main/.env.dist envfile
 ```
 
-Edit `envfile` as you like. Remember that `API_TOKEN` is a required data
+2) Edit `envfile` as you like. Remember that `API_TOKEN` is a required data
+
+3) Run with this command
 
 ```bash
 docker run -it --name do-backup-system --env-file /path/of/envfile giuseppemorelli/do-backup-system:latest
