@@ -4,6 +4,7 @@
 
 ![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/giuseppemorelli/digital-ocean-backup-systems?sort=semver&style=for-the-badge)
 ![GitHub](https://img.shields.io/github/license/giuseppemorelli/digital-ocean-backup-systems?style=for-the-badge)
+![Docker Build](https://img.shields.io/github/workflow/status/giuseppemorelli/digital-ocean-backup-systems/Build%20and%20push%20docker%20image?style=for-the-badge)
 
 </div>
 
