@@ -4,7 +4,8 @@
   "description": "Digital Ocean Backup Systems",
   "main": "do-cli.js",
   "scripts": {
-    "start": "node do-cli.js"
+    "start": "node do-cli.js",
+    "tsc": "tsc"
   },
   "author": "Morelli Giuseppe",
   "license": "MIT",
@@ -18,5 +19,8 @@
   "engines": {
     "node": ">=14",
     "npm": ">=6"
+  },
+  "devDependencies": {
+    "typescript": "^4.6.4"
   }
 }
