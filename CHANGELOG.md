@@ -1,5 +1,12 @@
 # Digital Ocean Backup System
 
+## 0.4.1
+
+### Added
+
+- create Dockerfile for run software in a container
+- github actions for publish docker container to docker hub
+
 ## 0.4.0
 
 ### Added

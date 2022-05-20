@@ -27,7 +27,7 @@ Migrate from backup to snapshot can avoid those problems and let you "free to ch
 
 ## Installation
 
-Donwload the code from relases [list](https://github.com/giuseppemorelli/digital-ocean-backup-systems/releases/)
+Download the code from releases [list](https://github.com/giuseppemorelli/digital-ocean-backup-systems/releases/)
 
 or clone with git
 
@@ -58,6 +58,20 @@ npm start
 crontab -e
 
 0 1 * * * /bin/bash /home/user/do-backup-system/bin/backup.sh
+```
+
+## Use with docker
+
+Copy locally the env file sample
+
+```bash
+wget https://raw.githubusercontent.com/giuseppemorelli/digital-ocean-backup-systems/main/.env.dist envfile
+```
+
+Edit `envfile` as you like. Remember that `API_TOKEN` is a required data
+
+```bash
+docker run -it --name do-backup-system --env-file /path/of/envfile giuseppemorelli/do-backup-system:latest
 ```
 
 ### ENV Variables
