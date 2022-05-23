@@ -1,5 +1,13 @@
 # Digital Ocean Backup System
 
+## 0.5.0
+
+### Changed
+- moving to Typescript
+
+### Fixed
+- docker tagged version was always the last
+
 ## 0.4.1
 
 ### Added
