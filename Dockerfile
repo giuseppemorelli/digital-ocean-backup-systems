@@ -23,6 +23,8 @@ VOLUME /app
 COPY ./ /app
 
 RUN cd /app \
-    && npm install --only=prod
+    && npm install \
+    && npm run tsc \
+    && npm install --only-prod
 
 CMD ["/app/docker/entrypoint.sh"]
