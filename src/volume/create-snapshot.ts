@@ -1,26 +1,31 @@
 import client from '../client.js';
-import csvWriter from 'csv-writer';
-import fsPromises from 'fs/promises';
 import csvAsync from 'async-csv';
+import { createObjectCsvWriter } from 'csv-writer';
+import { promises as fs } from 'fs';
 
-// Droplet list to exclude from snapshot
-let volumeToExclude = process.env.VOLUME_TO_EXCLUDE || [];
-if (volumeToExclude.length > 0) {
-    volumeToExclude = volumeToExclude.split(',');
+// Volume list to exclude from snapshot
+let volumeToExclude: string[] = [];
+let envVolumeToExclude = process.env.VOLUME_TO_EXCLUDE || '';
+if (envVolumeToExclude !== '') {
+    volumeToExclude = envVolumeToExclude.split(',');
 }
 const today = new Date().toISOString().substring(0, 10);
 const CSV_SNAPSHOTFILE = 'snapshot_volume_list.csv';
 
 export async function createVolumeSnapshot() {
     let snapshotCreatedList = [];
-    let actionsList = [];
-    let volumeList = await client.volumes.list();
-    let snapshotList = await client.snapshots.list();
+    let actionsList: unknown[] = [];
+
+    const input = {
+        per_page: 100,
+    }
+    let volumeList = await client.volume.listVolumes(input);
+    let snapshotList = await client.snapshot.listSnapshots(input);
 
     // Read CSV list of snapshot created for running checking
-    const csvString = await fsPromises.readFile('./var/' + CSV_SNAPSHOTFILE, 'utf-8')
+    const csvString = await fs.readFile('./var/' + CSV_SNAPSHOTFILE, 'utf-8')
         .catch(
-            function (error) {
+            function () {
                 console.log('NO SNAPSHOT FILE FOUND');
             }
         );
@@ -29,7 +34,7 @@ export async function createVolumeSnapshot() {
         actionsList = await csvAsync.parse(csvString);
     }
 
-    for (const volume of volumeList) {
+    for (const volume of volumeList.data.volumes) {
         console.log('');
         console.log("*********************************");
         console.log("MANAGE: " + volume.name);
@@ -45,7 +50,7 @@ export async function createVolumeSnapshot() {
         let found = false;
 
         // Check if there is a snapshot with the same slug
-        for (const snapshot of snapshotList) {
+        for (const snapshot of snapshotList.data.snapshots) {
             if (snapshot.name === slug) {
                 console.log("|-> WARNING! Found a snapshot with same slug " + slug);
                 found = true;
@@ -55,9 +60,11 @@ export async function createVolumeSnapshot() {
 
         // Check if there is a running snapshot process via actions on CSV
         for (const action of actionsList) {
+            // @ts-ignore
             if (Number.parseInt(action[1]) === volume.id) {
-                let actionResponse = await client.volumes.getAction(volume.id, action[2]);
-                if (actionResponse.status !== 'completed') {
+                // @ts-ignore
+                let actionResponse = await client.volume.getVolumeAction(volume.id, action[2]);
+                if (actionResponse.data.action.status !== 'completed') {
                     found = true;
                 } else {
                     console.log('|-> There is another snapshot process for this volume, skipped!');
@@ -70,15 +77,19 @@ export async function createVolumeSnapshot() {
             console.log('|-> CREATE SNAPSHOT for ' + volume.name);
 
             try {
-                let snapshotCreated = await client.volumes.snapshot(volume.id, slug);
+                const input = {
+                    volume_id: volume.id,
+                    name: slug
+                };
+                let snapshotCreated = await client.volume.createVolumeSnapshot(input);
                 let output = {
                     'volume_name': volume.name,
                     'volume_id': volume.id,
-                    'action_id': snapshotCreated.id
+                    'action_id': snapshotCreated.data.snapshot.id
                 }
                 console.log(output);
                 snapshotCreatedList.push(output);
-            } catch (error) {
+            } catch (error: any) {
                 console.log('ERROR! ' + error.body.message + ' -> SKIP');
             }
         } else {
@@ -88,7 +99,7 @@ export async function createVolumeSnapshot() {
 
     // Write on CSV snapshot action list
     if (snapshotCreatedList.length > 0) {
-        const csv = csvWriter.createObjectCsvWriter(
+        const csv = createObjectCsvWriter(
             {
                 path: './var/' + CSV_SNAPSHOTFILE,
                 header: ['volume_name', 'volume_id', 'action_id'],
