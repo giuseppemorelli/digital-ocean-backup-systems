@@ -40,7 +40,7 @@ Enter in project folder and run
 
 ```bash
 
-npm install
+npm install && npm run tsc
 cp .env.dit .env
 ```
 
