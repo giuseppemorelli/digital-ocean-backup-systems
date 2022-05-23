@@ -4,6 +4,7 @@
 
 ### Changed
 - moving to Typescript
+- change DO library to dots-wrapper
 
 ### Fixed
 - docker tagged version was always the last
