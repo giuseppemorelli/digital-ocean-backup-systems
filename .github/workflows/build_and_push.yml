@@ -43,7 +43,7 @@ jobs:
                     context: './'
                     tags: |
                         giuseppemorelli/do-backup-system:${{ steps.latest-tag.outputs.tag }}
-                    push: ${{ github.ref == 'refs/tags/'+steps.latest-tag.outputs.tag }}
+                    push: ${{ github.ref == 'refs/tags/0.4.1' }}
 
             -   name: Image digest
                 run: echo ${{ steps.docker_build.outputs.digest }}
