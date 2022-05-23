@@ -1,5 +1,13 @@
 <h1 align="center">Digital Ocean Backup System</h1>
 
+<div align="center">
+
+![GitHub tag (latest SemVer)](https://img.shields.io/github/v/tag/giuseppemorelli/digital-ocean-backup-systems?sort=semver&style=for-the-badge)
+![GitHub](https://img.shields.io/github/license/giuseppemorelli/digital-ocean-backup-systems?style=for-the-badge)
+![Docker Build](https://img.shields.io/github/workflow/status/giuseppemorelli/digital-ocean-backup-systems/Build%20and%20push%20docker%20image?style=for-the-badge)
+
+</div>
+
 Automate your snapshot system and copy into multiple regions of Digital Ocean Datacenter
 
 ## The "Digital Ocean Backup Problem"
@@ -32,7 +40,7 @@ Enter in project folder and run
 
 ```bash
 
-npm install
+npm install && npm run tsc
 cp .env.dit .env
 ```
 
@@ -55,13 +63,15 @@ crontab -e
 
 ## Use with docker
 
-Copy locally the env file sample
+1) Copy locally the env file sample
 
 ```bash
 wget https://raw.githubusercontent.com/giuseppemorelli/digital-ocean-backup-systems/main/.env.dist envfile
 ```
 
-Edit `envfile` as you like. Remember that `API_TOKEN` is a required data
+2) Edit `envfile` as you like. Remember that `API_TOKEN` is a required data
+
+3) Run with this command
 
 ```bash
 docker run -it --name do-backup-system --env-file /path/of/envfile giuseppemorelli/do-backup-system:latest
