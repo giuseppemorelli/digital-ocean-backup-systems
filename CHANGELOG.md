@@ -1,5 +1,8 @@
 # Digital Ocean Backup System
 
+### Changed
+- simplify bash script
+
 ## 0.5.0
 
 ### Changed
