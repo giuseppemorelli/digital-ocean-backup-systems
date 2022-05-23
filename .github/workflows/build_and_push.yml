@@ -31,20 +31,6 @@ jobs:
                         giuseppemorelli/do-backup-system:latest
                     push: ${{ github.ref == 'refs/heads/main' }}
 
-            -   name: Get the latest git tag
-                uses: actions-ecosystem/action-get-latest-tag@v1
-                id: latest-tag
-                with:
-                    semver_only: true
-
-            -   name: Build and push Docker images (latest tag)
-                uses: docker/build-push-action@v2.7.0
-                with:
-                    context: './'
-                    tags: |
-                        giuseppemorelli/do-backup-system:${{ steps.latest-tag.outputs.tag }}
-                    push: ${{ github.ref == 'refs/tags/0.4.1' }}
-
             -   name: Image digest
                 run: echo ${{ steps.docker_build.outputs.digest }}
 

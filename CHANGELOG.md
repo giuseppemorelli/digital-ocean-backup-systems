@@ -6,8 +6,8 @@
 - moving to Typescript
 - change DO library to dots-wrapper
 
-### Fixed
-- docker tagged version was always the last
+### Removed
+- docker auto-build with tagged version
 
 ## 0.4.1
 
