@@ -1,5 +1,5 @@
-import {createSnapshot} from "./src/droplet/create-snapshot.js";
-import {copySnapshot} from "./src/droplet/copy-snapshot.js";
+import { createSnapshot } from "./src/droplet/create-snapshot.js";
+import { copySnapshot } from "./src/droplet/copy-snapshot.js";
 import {removeSnapshot} from "./src/remove-snapshot.js";
 import {createVolumeSnapshot} from "./src/volume/create-snapshot.js";
 
